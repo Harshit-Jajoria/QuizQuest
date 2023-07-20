@@ -6,10 +6,8 @@ export const htmlQuestions = async (req, res) => {
     console.log('html called');
     // Query the database to find all questions with the questionType of 'html'
     const questions = await QuestionModel.find({ questionType: 'html' });
-    console.log(questions);
     res.status(200).json(questions);
   } catch (err) {
-    console.log(err);
     res.status(404).json({ message: err.message });
   }
 };

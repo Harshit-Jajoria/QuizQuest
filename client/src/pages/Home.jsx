@@ -1,6 +1,8 @@
 import React from 'react';
 import Footer from '../component/Footer';
 import Navbar from '../component/Navbar';
+import axios from 'axios';
+import { BACKEND_URL } from '../constants';
 
 const Home = () => {
   const cardItems = [
@@ -26,18 +28,25 @@ const Home = () => {
     },
     {
       id: 5,
-      text: 'node',
+      text: 'nodejs',
       imgSrc: '/assets/node.png'
     },
     {
       id: 6,
-      text: 'tailwind',
-      imgSrc: '/assets/tailwind.png'
+      text: 'nextjs',
+      imgSrc: '/assets/nextjs.png'
     },
   ];
 
-  const handleClick = (item) => {
+  const handleClick =async (item) => {
     console.log(item);
+    try {
+      const res = await axios.get(`${BACKEND_URL}/questions/html`)
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+
+    }
   };
 
   return (

@@ -6,7 +6,7 @@ import { cssQuestions, htmlQuestions, javascriptQuestions, nextQuestions, nodeQu
 const router = express.Router();
 
 /* READ */
-router.get('/questions/html', htmlQuegir stions);
+router.get('/questions/html', htmlQuestions);
 router.get('/questions/css', cssQuestions);
 router.get('/questions/javascript', javascriptQuestions);
 router.get('/questions/react', reactQuestions);
