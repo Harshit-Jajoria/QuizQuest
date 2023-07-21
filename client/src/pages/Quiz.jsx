@@ -1,12 +1,20 @@
+import axios from 'axios';
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { BACKEND_URL } from '../constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateScore } from '../state';
 
 const Quiz = () => {
   const location = useLocation();
-  const questions=location.state.questions;
+  const questions = location.state.questions;
+  const navigate=useNavigate()
+  const dispatch = useDispatch();
+  const user=useSelector((state)=>state.user)
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [score, setScore] = useState(0);
+  const [chosenOption, setChosenOption] = useState([]);
 
   const handleOptionSelect = (optionIndex) => {
     setSelectedOption(optionIndex);
@@ -17,6 +25,7 @@ const Quiz = () => {
       if (selectedOption === questions[currentQuestion].correctOptionIndex) {
         setScore((prevScore) => prevScore + 1);
       }
+      setChosenOption((prevChosenOption) => [...prevChosenOption, selectedOption]);
       setSelectedOption(null);
       setCurrentQuestion((prevQuestion) => prevQuestion + 1);
     } else {
@@ -24,30 +33,38 @@ const Quiz = () => {
     }
   };
 
-  const handleRestartQuiz = () => {
-    setCurrentQuestion(0);
-    setSelectedOption(null);
-    setScore(0);
+  const handleShowSolution =async () => {
+    console.log(chosenOption);
+    const res= await axios.put(`${BACKEND_URL}/update-score/${user._id}`,{score})
+    console.log(res.data);
+    // dispatch(
+    //   updateScore({
+    //     updatedScore:res.data.updateScore
+    //   })
+    // );
+    navigate('/solutions',{state: { questions: questions,chosenOption:chosenOption } })
+
+    
+    
   };
-if(!questions) return null;
+
+  if (!questions) return null;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black">
       <div className="w-full max-w-xl bg-gray-200 p-8 rounded-md shadow-md">
         {currentQuestion === questions.length ? (
-          // Show the final score when all questions are answered
           <>
             <h1 className="text-3xl font-bold mb-4">Quiz Completed!</h1>
             <p className="text-lg mb-4">Your Score: {score} / {questions.length}</p>
             <button
-              onClick={handleRestartQuiz}
+              onClick={handleShowSolution}
               className="bg-blue-500 text-white px-4 py-2 rounded-md"
             >
-              Restart Quiz
+              Solution
             </button>
           </>
         ) : (
-          // Show the quiz questions and options
           <>
             <h1 className="text-3xl font-bold mb-4">{questions[currentQuestion].question}</h1>
             <div className="grid gap-2">

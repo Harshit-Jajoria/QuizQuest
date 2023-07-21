@@ -26,7 +26,7 @@ export const register = async (req, res) => {
       email,
       password: passwordHash,
     });
-    
+
     const savedUser = await newUser.save();
     console.log(savedUser);
     res.status(201).json(savedUser);
@@ -58,7 +58,7 @@ export const login = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
-
+// Login Using Google
 export const loginByGmail = async (req, res) => {
   try {
     const { name, email } = req.body;
@@ -67,9 +67,9 @@ export const loginByGmail = async (req, res) => {
       const newUser = new UserModel({
         name,
         email,
-        loginMode:'google'
+        loginMode: 'google',
       });
-      user  = await newUser.save();
+      user = await newUser.save();
       const token = jwt.sign({ id: user._id }, JWT_SECRET);
       res.status(200).json({ token, user });
     } else {
@@ -77,6 +77,22 @@ export const loginByGmail = async (req, res) => {
       const token = jwt.sign({ id: user._id }, JWT_SECRET);
       res.status(200).json({ token, user });
     }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+// Update user score
+export const updateUserScore = async (req, res) => {
+  try {
+    const { score } = req.body;
+    const { id } = req.params;
+    const user = await UserModel.findById(id);
+    const updatedScore = user.totalScore + score;
+    user.totalScore = updatedScore;
+    await user.save();
+    return res.status(200).json({ updatedScore });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: error.message });

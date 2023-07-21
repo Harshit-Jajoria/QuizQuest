@@ -9,7 +9,7 @@ import { BACKEND_URL } from '../constants';
 import { useDispatch } from 'react-redux';
 import { setLogin } from '../state';
 import { auth, provider } from '../firebase/config';
-import { signInWithPopup, signInWithRedirect } from 'firebase/auth';
+import { signInWithPopup } from 'firebase/auth';
 
 const registerSchema = yup.object().shape({
   email: yup.string().required('required'),
