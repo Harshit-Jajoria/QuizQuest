@@ -223,7 +223,12 @@ const Signup = () => {
           </button>
         </form>
         <div className="text-center">
-          <p className="mt-2 text-sm text-blue-500 cursor-pointer underline">
+          <p
+            className="mt-2 text-sm text-blue-500 cursor-pointer underline"
+            onClick={() => {
+              navigate('/signin');
+            }}
+          >
             Already have an account? Sign here
           </p>
         </div>

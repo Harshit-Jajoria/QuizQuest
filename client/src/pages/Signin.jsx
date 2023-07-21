@@ -16,8 +16,8 @@ const registerSchema = yup.object().shape({
 });
 
 const initialValuesRegister = {
-  email: 'nomesh@yahoo.com',
-  password: 'Nomesh',
+  email: '',
+  password: '',
 };
 
 const Signin = () => {
@@ -170,7 +170,7 @@ const Signin = () => {
           </button>
         </form>
         <div className="text-center">
-          <p className="mt-2 text-sm text-blue-500 cursor-pointer underline">
+          <p className="mt-2 text-sm text-blue-500 cursor-pointer underline" onClick={()=>{navigate('/signup')}}>
             Don't have an account , Create here
           </p>
         </div>
