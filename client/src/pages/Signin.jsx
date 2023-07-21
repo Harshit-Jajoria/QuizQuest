@@ -8,7 +8,8 @@ import { useFormik } from 'formik';
 import { BACKEND_URL } from '../constants';
 import { useDispatch } from 'react-redux';
 import { setLogin } from '../state';
-
+import { auth, provider } from '../firebase/config';
+import { signInWithPopup, signInWithRedirect } from 'firebase/auth';
 
 const registerSchema = yup.object().shape({
   email: yup.string().required('required'),
@@ -25,7 +26,36 @@ const Signin = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
+  const handleGoogleSign = async () => {
+    try {
+      const data = await signInWithPopup(auth, provider);
+      const obj = {
+        name: data.user.displayName,
+        email: data.user.email,
+      };
+      const user = await axios.post(`${BACKEND_URL}/login-user-gmail`, obj);
+      dispatch(
+        setLogin({
+          user: user.data.user,
+          token: user.data.token,
+        })
+      );
 
+      toast.success('Logged in successfully', {
+        position: 'top-center',
+        pauseOnHover: true,
+      });
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
+
+    } catch (error) {
+      toast.error('Error signing in with Google', {
+        position: 'top-center',
+        pauseOnHover: true,
+      });
+    }
+  };
 
   const { values, errors, touched, handleSubmit, handleBlur, handleChange } =
     useFormik({
@@ -34,8 +64,6 @@ const Signin = () => {
       onSubmit: async (values) => {
         setLoading(true);
         try {
-          
-
           const savedUser = await axios.post(
             `${BACKEND_URL}/login-user`,
             values,
@@ -51,7 +79,7 @@ const Signin = () => {
               token: savedUser.data.token,
             })
           );
-         
+
           setLoading(false);
           toast.success('Logged In Successfully', {
             position: 'top-center',
@@ -61,9 +89,12 @@ const Signin = () => {
           setTimeout(() => {
             navigate('/');
           }, 2000);
-        } catch (error) {
+        } catch (err) {
           setLoading(false);
-          console.log(error);
+          toast.error(err.response.data.msg, {
+            position: 'top-center',
+            pauseOnHover: true,
+          });
         }
       },
     });
@@ -138,6 +169,7 @@ const Signin = () => {
 
           <button
             type="button"
+            onClick={handleGoogleSign}
             className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
             {/* Google logo SVG */}
@@ -170,7 +202,12 @@ const Signin = () => {
           </button>
         </form>
         <div className="text-center">
-          <p className="mt-2 text-sm text-blue-500 cursor-pointer underline" onClick={()=>{navigate('/signup')}}>
+          <p
+            className="mt-2 text-sm text-blue-500 cursor-pointer underline"
+            onClick={() => {
+              navigate('/signup');
+            }}
+          >
             Don't have an account , Create here
           </p>
         </div>
