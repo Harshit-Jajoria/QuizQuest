@@ -1,7 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
- import questionRoutes from './routes/question.js';
+import questionRoutes from './routes/question.js';
+import userRoutes from './routes/user.js';
 import jwt from 'jsonwebtoken';
 import { MONGO_URI, PORT } from './constants.js';
 import QuestionModel from './models/question.js';
@@ -12,8 +13,9 @@ const app = express();
 app.use(express.json());
 app.use(cors({ origin: '*' }));
 //Routes
-// app.use('/', userRoutes);
+app.use('/', userRoutes);
 app.use('/', questionRoutes);
+
 
 
 // Mongoose setup

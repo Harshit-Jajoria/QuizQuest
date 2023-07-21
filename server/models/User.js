@@ -6,24 +6,25 @@ const UserSchema = new mongoose.Schema(
       required: true,
       min: 3,
       max: 50,
-      
-    },
-    phoneNumber: {
-      type: String,
-      max: 50,
-      default: '',
     },
     email: {
       type: String,
       max: 50,
       default: '',
-
-      
     },
     password: {
       type: String,
       min: 8,
+      default: '',
     },
+    totalScore: {
+      type: Number,
+      default: 0,
+    },
+    loginMode:{
+      type: String,
+      default: 'form',
+    }
   },
   { timestamps: true }
 );

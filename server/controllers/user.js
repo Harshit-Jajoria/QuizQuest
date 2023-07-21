@@ -16,18 +16,19 @@ export const getUsers = async (req, res) => {
 // Resgister User
 export const register = async (req, res) => {
   try {
-    const { name, phoneNumber, password } = req.body;
+    const { name, email, password } = req.body;
 
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
     const newUser = new UserModel({
       name,
-      phoneNumber,
+      email,
       password: passwordHash,
     });
-
+    
     const savedUser = await newUser.save();
+    console.log(savedUser);
     res.status(201).json(savedUser);
   } catch (error) {
     console.log(error);
@@ -38,16 +39,20 @@ export const register = async (req, res) => {
 // Login In
 export const login = async (req, res) => {
   try {
-    const { phoneNumber, password } = req.body;
+    const { email, password } = req.body;
 
-    const user = await UserModel.findOne({ phoneNumber: phoneNumber });
+    const user = await UserModel.findOne({ email: email });
     if (!user) return res.status(400).json({ msg: 'USER NOT EXIST' });
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: 'INVALID CREDENTIALS' });
+
+    // Create a new object without the password property
+    const userWithoutPassword = { ...user.toObject() };
+    delete userWithoutPassword.password;
+
     const token = jwt.sign({ id: user._id }, JWT_SECRET);
-    delete user.password;
-    res.status(200).json({ token, user });
+    res.status(200).json({ token, user: userWithoutPassword });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: error.message });

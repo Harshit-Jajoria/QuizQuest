@@ -10,8 +10,8 @@ router.get('/questions/html', htmlQuestions);
 router.get('/questions/css', cssQuestions);
 router.get('/questions/javascript', javascriptQuestions);
 router.get('/questions/react', reactQuestions);
-router.get('/questions/next', nextQuestions);
-router.get('/questions/node', nodeQuestions);
+router.get('/questions/nextjs', nextQuestions);
+router.get('/questions/nodejs', nodeQuestions);
 
 // router.post('/add-user', addQuestions);
 

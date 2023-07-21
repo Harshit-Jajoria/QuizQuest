@@ -1,11 +1,24 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { setLogout } from '../state';
 
 function Navbar() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+  const [showLogoutDropdown, setShowLogoutDropdown] = useState(false);
+  const isAuth = useSelector((state) => state.token);
+  const userName = useSelector((state) => state.user?.name); 
 
   const toggleNavbar = () => {
     setIsNavbarOpen(!isNavbarOpen);
-  };  
+  };
+
+  const handleUserNameClick = () => {
+    setShowLogoutDropdown(!showLogoutDropdown);
+  };
 
   return (
     <nav className="bg-black">
@@ -45,18 +58,65 @@ function Navbar() {
           </svg>
         </button>
         <div
-          className={`${isNavbarOpen ? '' : 'hidden'} w-full md:block md:w-auto`}
+          className={`${
+            isNavbarOpen ? 'block' : 'hidden'
+          } md:flex md:w-auto md:block w-full`}
           id="navbar-default"
         >
-          <div className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-black md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-black">
-            <div className="cursor-pointer text-2xl block py-3 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 text-white">
-              Home
+          {isAuth && userName ? (
+            <div className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-black md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-black">
+              <div className="cursor-pointer text-2xl block py-3 pl-3 pr-4  rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 text-white">
+                Home
+              </div>
+              
+              <div className="relative">
+                <button
+                  className="text-2xl pt-0.5 pb-1 px-4 rounded-lg bg-gradient-to-r from-blue-100 via-blue-300 to-blue-500"
+                  onClick={handleUserNameClick}
+                >
+                  {userName} {/* Display the user's name */}
+                  <svg
+                    className="w-5 h-5 inline-block ml-1 cursor-pointer"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    onClick={handleUserNameClick}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+                {showLogoutDropdown && (
+                  <div className="absolute mt-2 py-2 w-32 bg-white rounded-lg shadow-xl z-20 right-0">
+                    <button
+                      onClick={() => dispatch(setLogout())}
+                      className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 w-full text-left"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="cursor-pointer text-2xl block py-3 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 text-white">
-              About
+          ) : (
+            <div className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-black md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-black">
+              <div className="cursor-pointer text-2xl block py-3 pl-3 pr-4  rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 text-white">
+                Home
+              </div>
+              
+              <button
+                className="text-2xl pt-0.5 pb-1 px-4 rounded-lg bg-gradient-to-r from-blue-100 via-blue-300 to-blue-500"
+                onClick={() => navigate('/signin')}
+              >
+                Login
+              </button>
             </div>
-            <button className='text-2xl pt-0.5 pb-1 px-4 rounded-lg bg-gradient-to-r from-blue-100 via-blue-300 to-blue-500'>Login</button>
-          </div>
+          )}
         </div>
       </div>
     </nav>

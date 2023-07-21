@@ -1,20 +1,9 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const Quiz = () => {
-  const questions = [
-    {
-      question: 'What is the result of the following expression? 2 + 2 * 3',
-      options: ['8', '10', '6', '12'],
-      correctOptionIndex: 2,
-    },
-    {
-      question: 'Which keyword is used to declare a variable in JavaScript?',
-      options: ['var', 'let', 'const', 'int'],
-      correctOptionIndex: 0,
-    },
-    // ... (The rest of the questions array)
-  ];
-
+  const location = useLocation();
+  const questions=location.state.questions;
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [score, setScore] = useState(0);
@@ -40,6 +29,7 @@ const Quiz = () => {
     setSelectedOption(null);
     setScore(0);
   };
+if(!questions) return null;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black">

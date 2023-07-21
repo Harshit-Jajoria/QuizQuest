@@ -4,11 +4,10 @@ import Home from './pages/Home';
 import Quiz from './pages/Quiz';
 import Signup from './pages/Signup';
 import Signin from './pages/Signin';
+import { useSelector } from 'react-redux';
 
 const App = () => {
-  // const isAuth = Boolean(useSelector((state) => state.token));
-  const isAuth = true;
-
+  const isAuth = Boolean(useSelector((state) => state.token));
   return (
     <div className="app">
       <BrowserRouter>
@@ -18,7 +17,7 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route
             path="/quiz"
-            element={isAuth ? <Quiz /> : <Navigate to="/home" />}
+            element={isAuth ? <Quiz /> : <Navigate to="/" />}
           />
         </Routes>
       </BrowserRouter>

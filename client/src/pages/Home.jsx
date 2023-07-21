@@ -3,8 +3,12 @@ import Footer from '../component/Footer';
 import Navbar from '../component/Navbar';
 import axios from 'axios';
 import { BACKEND_URL } from '../constants';
+import { redirect, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Home = () => {
+  const isAuth = Boolean(useSelector((state) => state.token));
+  const navigate=useNavigate()
   const cardItems = [
     {
       id: 1,
@@ -39,10 +43,14 @@ const Home = () => {
   ];
 
   const handleClick =async (item) => {
-    console.log(item);
+    if(!isAuth){
+      navigate('/signin')
+    }
+   
     try {
-      const res = await axios.get(`${BACKEND_URL}/questions/html`)
-      console.log(res.data);
+      const res = await axios.get(`${BACKEND_URL}/questions/${item.text}`)
+      const data=await res.data;
+      navigate('/quiz',{state: { questions: data } })
     } catch (error) {
       console.log(error);
 
