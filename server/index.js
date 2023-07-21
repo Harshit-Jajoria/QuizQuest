@@ -5,7 +5,7 @@ import questionRoutes from './routes/question.js';
 import userRoutes from './routes/user.js';
 import jwt from 'jsonwebtoken';
 import { MONGO_URI, PORT } from './constants.js';
-import QuestionModel from './models/question.js';
+import QuestionModel from './models/Questions.js';
 import { questions } from './db/question.js';
 
 // Configuration
@@ -15,8 +15,6 @@ app.use(cors({ origin: '*' }));
 //Routes
 app.use('/', userRoutes);
 app.use('/', questionRoutes);
-
-
 
 // Mongoose setup
 mongoose.set('strictQuery', false);
