@@ -67,6 +67,7 @@ export const loginByGmail = async (req, res) => {
       const newUser = new UserModel({
         name,
         email,
+        loginMode:'google'
       });
       user  = await newUser.save();
       const token = jwt.sign({ id: user._id }, JWT_SECRET);
