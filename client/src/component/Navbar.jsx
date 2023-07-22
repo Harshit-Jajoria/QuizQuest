@@ -10,7 +10,7 @@ function Navbar() {
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
   const [showLogoutDropdown, setShowLogoutDropdown] = useState(false);
   const isAuth = useSelector((state) => state.token);
-  const userName = useSelector((state) => state.user?.name); 
+  const userName = useSelector((state) => state.user?.name);
 
   const toggleNavbar = () => {
     setIsNavbarOpen(!isNavbarOpen);
@@ -65,10 +65,23 @@ function Navbar() {
         >
           {isAuth && userName ? (
             <div className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-black md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-black">
-              <div className="cursor-pointer text-2xl block py-3 pl-3 pr-4  rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 text-white">
+              <div
+                className="cursor-pointer text-2xl block py-3 pl-3 pr-4  rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 text-white"
+                onClick={() => {
+                  navigate('/');
+                }}
+              >
                 Home
               </div>
-              
+              <div
+                className="cursor-pointer text-2xl block py-3 pl-3 pr-4  rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 text-white"
+                onClick={() => {
+                  navigate('/scoreboard');
+                }}
+              >
+                ScoreBoard
+              </div>
+
               <div className="relative">
                 <button
                   className="text-2xl pt-0.5 pb-1 px-4 rounded-lg bg-gradient-to-r from-blue-100 via-blue-300 to-blue-500"
@@ -92,7 +105,7 @@ function Navbar() {
                   </svg>
                 </button>
                 {showLogoutDropdown && (
-                  <div className="absolute mt-2 py-2 w-32 bg-white rounded-lg shadow-xl z-20 right-0">
+                  <div className="absolute mt-2 py-2 w-32 bg-white rounded-lg shadow-xl z-20 left-0 sm:right-0">
                     <button
                       onClick={() => dispatch(setLogout())}
                       className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 w-full text-left"
@@ -105,10 +118,23 @@ function Navbar() {
             </div>
           ) : (
             <div className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-black md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-black">
-              <div className="cursor-pointer text-2xl block py-3 pl-3 pr-4  rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 text-white">
-                Home
+              <div
+                className="cursor-pointer text-2xl block py-3 pl-3 pr-4  rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 text-white"
+                onClick={() => {
+                  navigate('/');
+                }}
+              >
+                 Home
               </div>
-              
+              <div
+                className="cursor-pointer text-2xl block py-3 pl-3 pr-4  rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 text-white"
+                onClick={() => {
+                  navigate('/scoreboard');
+                }}
+              >
+                ScoreBoard
+              </div>
+
               <button
                 className="text-2xl pt-0.5 pb-1 px-4 rounded-lg bg-gradient-to-r from-blue-100 via-blue-300 to-blue-500"
                 onClick={() => navigate('/signin')}

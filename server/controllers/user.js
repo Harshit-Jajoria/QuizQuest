@@ -12,7 +12,20 @@ export const getUsers = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 };
+export const getScoreboard = async (req, res) => {
+  try {
+    const users = await UserModel.find();
 
+    const userScores = users.map((user) => ({
+      name: user.name,
+      score: user.totalScore,
+    }));
+    userScores.sort((a, b) => b.score - a.score);
+    res.status(200).json(userScores);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
 // Resgister User
 export const register = async (req, res) => {
   try {
