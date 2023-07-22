@@ -10,7 +10,7 @@ const Footer = () => {
         </a>
         . All Rights Reserved.
       </span>
-      <ul className="flex flex-wrap items-center mt-3 text-sm font-medium text-white sm:mt-0">
+      <ul className="flex flex-wrap items-center mt-3 text-sm font-medium text-white sm:mt-0.5">
         <li>
           <a
             href="https://www.linkedin.com/in/harshit-jajoria-45274b18b/"
