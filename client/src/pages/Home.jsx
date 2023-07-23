@@ -7,7 +7,9 @@ import { redirect, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const Home = () => {
-  const isAuth = Boolean(useSelector((state) => state.token));
+  const token = useSelector((state) => state.token);
+  const isAuth = Boolean(token);
+
   const navigate = useNavigate();
   const cardItems = [
     { id: 1, text: 'html', imgSrc: '/assets/html.png' },
@@ -24,7 +26,9 @@ const Home = () => {
     }
 
     try {
-      const res = await axios.get(`${BACKEND_URL}/questions/${item.text}`);
+      const res = await axios.get(`${BACKEND_URL}/questions/${item.text}`,{
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const data = await res.data;
       navigate('/quiz', { state: { questions: data } });
     } catch (error) {

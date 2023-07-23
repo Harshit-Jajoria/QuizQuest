@@ -8,9 +8,11 @@ import { updateScore } from '../state';
 const Quiz = () => {
   const location = useLocation();
   const questions = location.state.questions;
-  const navigate=useNavigate()
+  const token = useSelector((state) => state.token);
+
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user=useSelector((state)=>state.user)
+  const user = useSelector((state) => state.user);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [score, setScore] = useState(0);
@@ -25,7 +27,10 @@ const Quiz = () => {
       if (selectedOption === questions[currentQuestion].correctOptionIndex) {
         setScore((prevScore) => prevScore + 1);
       }
-      setChosenOption((prevChosenOption) => [...prevChosenOption, selectedOption]);
+      setChosenOption((prevChosenOption) => [
+        ...prevChosenOption,
+        selectedOption,
+      ]);
       setSelectedOption(null);
       setCurrentQuestion((prevQuestion) => prevQuestion + 1);
     } else {
@@ -33,19 +38,23 @@ const Quiz = () => {
     }
   };
 
-  const handleShowSolution =async () => {
+  const handleShowSolution = async () => {
     console.log(chosenOption);
-    const res= await axios.put(`${BACKEND_URL}/update-score/${user._id}`,{score})
-    console.log(res.data);
+    const res = await axios.put(
+      `${BACKEND_URL}/update-score/${user._id}`,
+      { score },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     // dispatch(
     //   updateScore({
     //     updatedScore:res.data.updateScore
     //   })
     // );
-    navigate('/solutions',{state: { questions: questions,chosenOption:chosenOption } })
-
-    
-    
+    navigate('/solutions', {
+      state: { questions: questions, chosenOption: chosenOption },
+    });
   };
 
   if (!questions) return null;
@@ -56,7 +65,9 @@ const Quiz = () => {
         {currentQuestion === questions.length ? (
           <>
             <h1 className="text-3xl font-bold mb-4">Quiz Completed!</h1>
-            <p className="text-lg mb-4">Your Score: {score} / {questions.length}</p>
+            <p className="text-lg mb-4">
+              Your Score: {score} / {questions.length}
+            </p>
             <button
               onClick={handleShowSolution}
               className="bg-blue-500 text-white px-4 py-2 rounded-md"
@@ -66,13 +77,17 @@ const Quiz = () => {
           </>
         ) : (
           <>
-            <h1 className="text-3xl font-bold mb-4">{questions[currentQuestion].question}</h1>
+            <h1 className="text-3xl font-bold mb-4">
+              {questions[currentQuestion].question}
+            </h1>
             <div className="grid gap-2">
               {questions[currentQuestion].options.map((option, index) => (
                 <div
                   key={index}
                   className={`p-4 border border-gray-400 rounded-md cursor-pointer ${
-                    selectedOption === index ? 'bg-blue-500 text-white' : 'bg-white'
+                    selectedOption === index
+                      ? 'bg-blue-500 text-white'
+                      : 'bg-white'
                   } hover:bg-blue-500 hover:text-white`}
                   onClick={() => handleOptionSelect(index)}
                 >
