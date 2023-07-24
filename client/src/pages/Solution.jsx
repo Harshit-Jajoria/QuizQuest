@@ -1,5 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import Footer from '../component/Footer';
+import Navbar from '../component/Navbar';
 
 const Solution = () => {
   const location = useLocation();
@@ -7,6 +9,8 @@ const Solution = () => {
   const chosenOption = location.state.chosenOption;
 
   return (
+    <>
+    <Navbar/>
     <div className="min-h-screen flex items-center justify-center bg-black">
       <div className="w-full max-w-3xl bg-gray-200 p-8 rounded-md shadow-md">
         <h1 className="text-4xl font-bold mb-6">Quiz Solution</h1>
@@ -35,6 +39,8 @@ const Solution = () => {
         ))}
       </div>
     </div>
+    <Footer/>
+    </>
   );
 };
 

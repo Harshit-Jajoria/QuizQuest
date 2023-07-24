@@ -7,6 +7,7 @@ import Signin from './pages/Signin';
 import { useSelector } from 'react-redux';
 import Solution from './pages/Solution';
 import Scoreboard from './pages/Scoreboard';
+import AddQuestion from './pages/AddQuestion';
 
 const App = () => {
   const isAuth = Boolean(useSelector((state) => state.token));
@@ -21,8 +22,11 @@ const App = () => {
             path="/quiz"
             element={isAuth ? <Quiz /> : <Navigate to="/" />}
           />
-          <Route path="/solutions" element={<Solution />} />
+          <Route path="/solutions" element={isAuth ? <Solution /> : <Navigate to="/" />} />
           <Route path="/scoreboard" element={<Scoreboard />} />
+          <Route path="/addquestion" element={isAuth ? <AddQuestion /> : <Navigate to="/" />} />
+
+
 
         </Routes>
       </BrowserRouter>

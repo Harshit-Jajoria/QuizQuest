@@ -10,7 +10,9 @@ function Navbar() {
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
   const [showLogoutDropdown, setShowLogoutDropdown] = useState(false);
   const isAuth = useSelector((state) => state.token);
-  const userName = useSelector((state) => state.user?.name);
+  const user = useSelector((state) => state.user);
+  const name = user.name;
+  const role = user.role;
 
   const toggleNavbar = () => {
     setIsNavbarOpen(!isNavbarOpen);
@@ -19,6 +21,8 @@ function Navbar() {
   const handleUserNameClick = () => {
     setShowLogoutDropdown(!showLogoutDropdown);
   };
+
+  const isFaculty = role === 'faculty'; // Check if the role is 'faculty'
 
   return (
     <nav className="bg-black">
@@ -63,7 +67,7 @@ function Navbar() {
           } md:flex md:w-auto md:block w-full`}
           id="navbar-default"
         >
-          {isAuth && userName ? (
+          {isAuth && name ? (
             <div className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-black md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-black">
               <div
                 className="cursor-pointer text-2xl block py-3 pl-3 pr-4  rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 text-white"
@@ -82,12 +86,23 @@ function Navbar() {
                 ScoreBoard
               </div>
 
+              {isFaculty && ( // Show the "Add Question" div if the user is a faculty
+                <div
+                  className="cursor-pointer text-2xl block py-3 pl-3 pr-4  rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 text-white"
+                  onClick={() => {
+                    navigate('addquestion');
+                  }}
+                >
+                  Add Question
+                </div>
+              )}
+
               <div className="relative">
                 <button
                   className="text-2xl pt-0.5 pb-1 px-4 rounded-lg bg-gradient-to-r from-blue-100 via-blue-300 to-blue-500"
                   onClick={handleUserNameClick}
                 >
-                  {userName} {/* Display the user's name */}
+                  {name} {/* Display the user's name */}
                   <svg
                     className="w-5 h-5 inline-block ml-1 cursor-pointer"
                     fill="none"
@@ -124,7 +139,7 @@ function Navbar() {
                   navigate('/');
                 }}
               >
-                 Home
+                Home
               </div>
               <div
                 className="cursor-pointer text-2xl block py-3 pl-3 pr-4  rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 text-white"

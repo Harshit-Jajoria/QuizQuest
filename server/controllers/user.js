@@ -29,7 +29,7 @@ export const getScoreboard = async (req, res) => {
 // Resgister User
 export const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password,role } = req.body;
 
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
@@ -38,10 +38,10 @@ export const register = async (req, res) => {
       name,
       email,
       password: passwordHash,
+      role,
     });
 
     const savedUser = await newUser.save();
-    console.log(savedUser);
     res.status(201).json(savedUser);
   } catch (error) {
     console.log(error);

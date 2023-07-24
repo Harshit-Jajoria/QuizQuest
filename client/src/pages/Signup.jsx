@@ -34,6 +34,11 @@ const Signup = () => {
 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [selectedButton, setSelectedButton] = useState('student');
+
+  const handleButtonClick = (buttonType) => {
+    setSelectedButton(buttonType);
+  };
   const handleGoogleSign = async () => {
     try {
       const data = await signInWithPopup(auth, provider);
@@ -56,7 +61,6 @@ const Signup = () => {
       setTimeout(() => {
         navigate('/');
       }, 2000);
-
     } catch (error) {
       toast.error('Error signing in with Google', {
         position: 'top-center',
@@ -71,22 +75,20 @@ const Signup = () => {
       onSubmit: async (values) => {
         setLoading(true);
         try {
-          const formData = new FormData();
-
-          for (let value in values) {
-            if (value !== 'confirmPassword')
-              formData.append(value, values[value]);
-          }
+          values.role=selectedButton;
+          delete values['confirmPassword']
+          console.log(values);
 
           const savedUser = await axios.post(
             `${BACKEND_URL}/add-user`,
-            formData,
+            values,
             {
               headers: {
                 'Content-Type': 'application/json',
               },
             }
           );
+          console.log(savedUser.data);
           setLoading(false);
           toast.success('Account Created Successfully', {
             position: 'top-center',
@@ -111,6 +113,28 @@ const Signup = () => {
           <p className="mt-2 text-center text-sm">
             Enter your details to sign up
           </p>
+          <div className="space-x-4 mt-3">
+            <button
+                className={`w-fit px-4 py-2  border-2 rounded-xl border-orange-300 hover:bg-orange-300 ${
+                  selectedButton === 'student'
+                    ? 'bg-orange-300'
+                    : ''
+                }`}
+              onClick={() => handleButtonClick('student')}
+            >
+              Student
+            </button>
+            <button
+              className={`w-fit px-4 py-2 rounded-xl border-2 border-orange-300 hover:bg-orange-300 ${
+                selectedButton === 'faculty'
+                  ? 'bg-orange-300'
+                  : ''
+              }`}
+              onClick={() => handleButtonClick('faculty')}
+            >
+              Faculty
+            </button>
+          </div>
         </div>
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <div className="space-y-4">

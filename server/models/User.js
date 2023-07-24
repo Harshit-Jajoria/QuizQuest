@@ -21,10 +21,14 @@ const UserSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    loginMode:{
+    loginMode: {
       type: String,
       default: 'form',
-    }
+    },
+    role: {
+      type: String,
+      default: 'student',
+    },
   },
   { timestamps: true }
 );
