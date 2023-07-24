@@ -11,7 +11,7 @@ function Navbar() {
   const [showLogoutDropdown, setShowLogoutDropdown] = useState(false);
   const isAuth = useSelector((state) => state.token);
   const user = useSelector((state) => state.user);
-  const name = user.name;
+  const name = user?.name;
   const role = user.role;
 
   const toggleNavbar = () => {
