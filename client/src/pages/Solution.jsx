@@ -7,7 +7,6 @@ const Solution = () => {
   const location = useLocation();
   const questions = location.state.questions;
   const chosenOption = location.state.chosenOption;
-
   return (
     <>
     <Navbar/>
