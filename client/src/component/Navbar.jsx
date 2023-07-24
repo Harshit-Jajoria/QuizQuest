@@ -12,7 +12,7 @@ function Navbar() {
   const isAuth = useSelector((state) => state.token);
   const user = useSelector((state) => state.user);
   const name = user?.name;
-  const role = user.role;
+  const role = user?.role;
 
   const toggleNavbar = () => {
     setIsNavbarOpen(!isNavbarOpen);
