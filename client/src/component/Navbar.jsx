@@ -90,7 +90,7 @@ function Navbar() {
                 <div
                   className="cursor-pointer text-2xl block py-3 pl-3 pr-4  rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 text-white"
                   onClick={() => {
-                    navigate('addquestion');
+                    navigate('/addquestion');
                   }}
                 >
                   Add Question
